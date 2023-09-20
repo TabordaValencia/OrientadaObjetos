@@ -1,0 +1,46 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Examen
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Loteria Instancia1 = new Loteria();
+            Instancia1.Facturar("Instancia1");
+
+            Loteria Instancia2 = new Loteria("BOGOTÁ", 8999, 5000, Convert.ToDateTime("2023/09/11"), "Hernan"); //1 día antes del examen
+            Instancia2.Facturar("Instancia2");
+
+            Loteria Instancia3 = new Loteria("VALLE", 8199, 5000, Convert.ToDateTime("2023/09/10"), "Miguel");  //2 días antes del examen
+            Instancia3.Facturar("Instancia3");
+
+            Loteria Instancia4 = new Loteria("CRUZ ROJA", 1009, 1000, Convert.ToDateTime("2023/08/12"), "Pedro");  //1 mes antes del examen
+            Instancia4.Facturar("Instancia4");
+
+            Loteria Instancia5 = new Loteria("BOGOTÁ", 8750, 5000, Convert.ToDateTime("2023/09/12"), "Jairo");  //Fecha del examen
+            Instancia5.Facturar("Instancia5");
+
+            Loteria Instancia6 = new Loteria("MEDELLIN", 1, 8000, Convert.ToDateTime("2022/09/12"), "Ana");  //Año anterior al del examen
+            Instancia6.Facturar("Instancia6");
+
+            Loteria Instancia7 = new Loteria("VALLE", 819, 5000, Convert.ToDateTime("2024/03/02"), "Carlos");  //Año siguiente del examen
+            Instancia7.Facturar("Instancia7");
+
+            Loteria Instancia8 = new Loteria("MANIZALEZ", 5419, 2000, Convert.ToDateTime("2023/09/14"), "Andrés");  //2 días después del examen
+            Instancia8.Facturar("Instancia8");
+
+            Loteria Instancia9 = new Loteria("CRUZ ROJA", 1009, 1000, Convert.ToDateTime("2023/09/14"), "Diego");  //2 días después del examen
+            Instancia9.Facturar("Instancia9");
+
+            Loteria Instancia10 = new Loteria("MEDELLÍN", 4589, 10000, Convert.ToDateTime("2023/01/01"), "Ángel");  //Primer día año del examen
+            Instancia10.Facturar("Instancia10");
+
+
+        }
+    }
+}
