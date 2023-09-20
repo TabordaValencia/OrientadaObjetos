@@ -1,0 +1,189 @@
+using System;
+using static System.Console;
+
+namespace Implementacion_POO
+{
+    class Aseguradora
+    {
+        public string Placa { get; set; }
+        public int Modelo { get; set; }
+        public string Tipo { get; set; }
+        public int Cilindraje { get; set; }
+        public bool SoatActivo { get; set; }
+        public double ValorComercial { get; set; }
+
+        public Aseguradora()
+        {
+            this.Placa = "AAA-000";
+            this.Modelo = 2000;
+            this.Tipo = "T0";
+            this.Cilindraje = 1000;
+            this.SoatActivo = true;
+            this.ValorComercial = 30000000;
+        }
+
+        public Aseguradora(string placa, int modelo, string tipo, int cilindraje, bool soatActivo, double valorComercial)
+        {
+            this.Placa = placa;
+            this.Modelo = modelo;
+            this.Tipo = tipo;
+            this.Cilindraje = cilindraje;
+            this.SoatActivo = soatActivo;
+            this.ValorComercial = valorComercial;
+        }
+
+        public Aseguradora(string placa, int modelo, int cilindraje, double valorComercial)
+        {
+            this.Placa = placa;
+            this.Modelo = modelo;
+            this.Cilindraje = cilindraje;
+            this.ValorComercial = valorComercial;
+            this.Tipo = "T0";
+            this.SoatActivo = true;
+        }
+
+        public Aseguradora(int numero, string placa, double valorComercial)
+        {
+            this.Placa = placa;
+            this.ValorComercial = valorComercial;
+            WriteLine($"\nIngreso de información venta {numero}");
+            Write("Ingrese el Modelo: ");
+            this.Modelo = Convert.ToInt32(ReadLine());
+            Write("Ingrese el Cilindraje: ");
+            this.Cilindraje = Convert.ToInt32(ReadLine());
+            Write("Ingrese el valor comercial: ");
+            this.ValorComercial = Convert.ToDouble(ReadLine());
+            Write("Ingrese el Tipo: ");
+            this.Tipo = ReadLine();
+            Write("Ingrese si el SOAT está activo o no [true/false]: ");
+            this.SoatActivo = Convert.ToBoolean(ReadLine());
+        }
+
+        private bool Validacion1()
+        {
+            /*if (Modelo >= 1970 && Modelo <= 2024)
+               return true;
+           return false;*/
+            return this.Modelo >= 1970 && this.Modelo <= 2024;
+        }
+
+        private string Validacion2()
+        {
+            switch (this.Tipo)
+            {
+                case "T1": return "Moto";
+                case "T2": return "Camioneta";
+                case "T3": return "Carga";
+                case "T4": return "Oficial";
+                case "T5": return "Familiar ";
+                case "T6": return "Taxi";
+                case "T7": return "Bus";
+                case "T8": return "MicroBus";
+                default: return "*";
+            }
+        }
+
+        private double ValorSoat()
+        {
+            switch (this.Tipo)
+            {
+                case "T1": case "T3": case "T4": case "T8": return -1;
+                case "02":
+                    if (this.Modelo < 2000) return 1390000;
+                    else if (this.Modelo > 2015) return 1200000;
+                    return 1280000;
+                case "T5":
+                    if (this.Modelo < 2000) return 1250000;
+                    else if (this.Modelo > 2015) return 1060000;
+                    return 1190000;
+                case "T6":
+                    if (this.Modelo < 2000) return 1540000;
+                    else if (this.Modelo > 2015) return 1300000;
+                    return 1420000;
+                case "T7":
+                    if (this.Modelo < 2000) return 1320000;
+                    else if (this.Modelo > 2015) return 1110000;
+                    return 1210000;
+                default: return 0;
+            }
+        }
+
+        private int Advertencia()
+        {
+            WriteLine("Ingrese la fecha de vencimiento del SOAT:");
+            string fechaVen = ReadLine();
+            return (DateTime.Now - Convert.ToDateTime(fechaVen)).Days;
+        }
+
+        private void Liquidar()
+        {
+            WriteLine("Ingrese el TRM: ");
+            double trm = Convert.ToDouble(ReadLine());
+            WriteLine("Ingrese el equivalente de 1 euro en pesos: ");
+            double eqEuro = Convert.ToDouble(ReadLine());
+            double valVehPesos = this.ValorComercial * trm;
+            double valVehEuros = ValorComercial * eqEuro;
+            double valPolPesos = valVehPesos * 0.29;
+            double valComPesos = valVehPesos * 0.153;
+            double valRealPesos = valVehPesos * 0.9167;
+            double valDctPesos = this.ValorComercial * 0.022 + valPolPesos;
+            double valLiqPesos = this.ValorComercial + valPolPesos + this.ValorSoat() - valDctPesos;
+            WriteLine($"Valor vehículo (pesos colombianos) : {valVehPesos}");
+            WriteLine($"Valor vehículo (euros)             : {valVehEuros}");
+            WriteLine($"Valor de poliza (pesos colombianos): {valPolPesos}");
+            WriteLine($"Valor comisión (pesos colombianos) : {valComPesos}");
+            WriteLine($"Valor Real (pesos colombianos)     : {valRealPesos}");
+            WriteLine($"Valor del descuento                : {valDctPesos}");
+            WriteLine($"Valor liquidación                  : {valLiqPesos}");
+        }
+
+        public void Informe(string mensaje)
+        {
+            string val2 = this.Validacion2();
+            double valSoat = this.ValorSoat();
+            WriteLine($"===============================================");
+            WriteLine($"INFORME ASEGURADORA {mensaje}");
+            WriteLine($"===============================================");
+            WriteLine($"PLACA           :  {this.Placa}");
+            WriteLine($"MODELO          :  {this.Modelo}");
+            WriteLine($"SOAT ACTIVO     :  {this.SoatActivo}");
+            if (!val2.Equals("*"))
+            {
+                Write($"TIPO            :  {this.Tipo}-");
+                WriteLine(val2 != "*" ? val2 : "TIPO NO EXISTE");
+                switch (valSoat)
+                {
+                    case -1: WriteLine("TIPO NO HA SIDO SISTEMATIZADO"); break;
+                    default: WriteLine($"VALOR SOAT      :  {valSoat}"); break;
+                }
+                WriteLine(this.Validacion1() ? "MODELO EXISTE" : "MODELO NO EXISTE");
+                int numDias = this.Advertencia();
+                if (numDias < 0)
+                {
+                    BackgroundColor = ConsoleColor.DarkGreen;
+                    WriteLine($"Faltan {Math.Abs(numDias)} días para vencerse");
+                    BackgroundColor = ConsoleColor.Black;
+                    this.SoatActivo = true;
+                }
+                else if (numDias > 0)
+                {
+                    BackgroundColor = ConsoleColor.DarkRed;
+                    WriteLine($"Tiene {numDias} días de vencido el SOAT");
+                    BackgroundColor = ConsoleColor.Black;
+                    this.SoatActivo = false;
+                }
+                else
+                {
+                    BackgroundColor = ConsoleColor.DarkGray;
+                    WriteLine($"SOAT está al día");
+                    BackgroundColor = ConsoleColor.Black;
+                    this.SoatActivo = true;
+                }
+                WriteLine($"CILINDRAJE      :  {this.Cilindraje}");
+                WriteLine($"SOAT ACTIVO     :  {this.SoatActivo}");
+                WriteLine($"VALOR COMERCIAL :  {this.ValorComercial}");
+                this.Liquidar();
+            }
+        }
+    }
+}
